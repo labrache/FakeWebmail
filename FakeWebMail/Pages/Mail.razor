@@ -1,0 +1,84 @@
+﻿@page "/mail/{filename}"
+@page "/mail"
+@using MimeKit;
+@inject HttpClient Http
+@inject IJSRuntime JS
+
+<PageTitle>Courriel</PageTitle>
+@if(Message != null)
+{
+    <table class="table table-hover table-borderless table-sm">
+        <tbody>
+            <tr>
+                <th scope="row">Expediteur</th>
+                <td class="font-monospace">@Message.From</td>
+            </tr>
+            <tr>
+                <th scope="row">Destinataire</th>
+                <td class="font-monospace">@Message.To</td>
+            </tr>
+            <tr>
+                <th scope="row">Adresse de réponse</th>
+                <td class="font-monospace">@Message.ReplyTo</td>
+            </tr>
+            <tr>
+                <th scope="row">Objet</th>
+                <td class="font-monospace">@Message.Subject</td>
+            </tr>
+        </tbody>
+    </table>
+    @if (showSanitizeAlert)
+    {
+        <div class="alert alert-secondary d-flex justify-content-between" role="alert">
+            <span>Une partie du contenu de ce message à été neutralisé</span>
+            <button class="btn btn-outline-danger btn-sm" @onclick="() => Unprotect()">Charger le contenu bloqué</button>
+        </div>
+    }
+    @if(HtmlBody != null)
+    {
+        <div class="card">
+            <div class="card-body">
+                @((MarkupString)HtmlBody)
+            </div>
+        </div>
+    }
+}
+
+@code {
+    [Parameter]
+    public String? filename { get; set; }
+
+    public Boolean showSanitizeAlert { get; set; }
+
+    public String? HtmlBody { get; set; }
+
+    MimeMessage? Message { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!String.IsNullOrEmpty(filename))
+        {
+            var mailStream = await Http.GetStreamAsync("maildata/"+filename);
+            Message = await MimeMessage.LoadAsync(mailStream);
+            HtmlPreviewVisitor previewer = new HtmlPreviewVisitor(true);
+            previewer.Visit(Message);
+            showSanitizeAlert = previewer.hasTriggeredProtection;
+            HtmlBody = previewer.HtmlBody;
+        } else
+        {
+            Message = null;
+        }
+        await base.OnParametersSetAsync();
+    }
+    private void Unprotect()
+    {
+        HtmlPreviewVisitor previewer = new HtmlPreviewVisitor(false);
+        previewer.Visit(Message);
+        HtmlBody = previewer.HtmlBody;
+        showSanitizeAlert = false;
+    }
+}

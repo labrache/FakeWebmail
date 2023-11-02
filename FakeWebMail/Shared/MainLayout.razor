@@ -1,0 +1,12 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page" style="display: flex; flex-wrap: wrap;">
+    <div class="col-4" style="overflow-y: scroll;">
+        <NavMenu />
+    </div>
+    <main class="col-8">
+        <article class="content px-4" style="overflow-y: scroll; max-height: 100vh;">
+            @Body
+        </article>
+    </main>
+</div>

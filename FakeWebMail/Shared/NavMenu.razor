@@ -1,0 +1,33 @@
+﻿@using FWMCommons;
+
+@inject HttpClient Http
+
+<div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="height: 100vh;">
+    <div class="list-group list-group-flush border-bottom scrollarea">
+        @if (Mails != null)
+        {
+            @foreach (var Mail in Mails)
+            {
+                <a href="mail/@Mail.FileName" @onclick="@(() => selectedFile = Mail.FileName)" class="list-group-item list-group-item-action @(selectedFile == Mail.FileName ? "active" : "") py-3 lh-sm" aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1 w-75">@Mail.Subject</strong>
+                        <small class="w-25 text-end">@Mail.Date</small>
+                    </div>
+                    <div class="col-10 mb-1 small">@Mail.From</div>
+                </a>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    public List<MailMetadata>? Mails { get; set; }
+
+    public String? selectedFile { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Mails = await Http.GetFromJsonAsync<List<MailMetadata>>("maildata/maillist.json");
+        await base.OnInitializedAsync();
+    }
+}

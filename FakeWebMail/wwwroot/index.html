@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>FakeWebMail</title>
+    <base href="./" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="manifest.json" rel="manifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+</head>
+
+<body>
+    <div id="app">Chargement...</div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <div class="modal fade" id="linkModal" tabindex="-1" aria-labelledby="linkModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="linkModalLabel">Analyse du lien</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h3>Lien complet</h3>
+                    <p class="font-monospace text-break" id="fullUrl"></p>
+                    <h3>Décomposition du lien</h3>
+                    <table class="table table-striped table-borderless table-sm">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Protocole</th>
+                                <td class="font-monospace text-break" id="url_protocol"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Utilisateur</th>
+                                <td class="font-monospace text-break" id="url_user"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Mot de passe</th>
+                                <td class="font-monospace text-break" id="url_password"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Hôte</th>
+                                <td class="font-monospace text-break" id="url_host"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Port</th>
+                                <td class="font-monospace text-break" id="url_port"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Chemin</th>
+                                <td class="font-monospace text-break" id="url_path"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Requête</th>
+                                <td class="font-monospace text-break" id="url_query"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Ancre</th>
+                                <td class="font-monospace text-break" id="url_hash"></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="bootstrap.bundle.min.js"></script>
+    <script src="Scripts.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
+</body>
+
+</html>

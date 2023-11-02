@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FWMBuilder": {
+      "commandName": "Project",
+      "commandLineArgs": "-in \"[INPUT DIRECTORY]\" -out \"[OUTPUT DIRECTORY]\""
+    }
+  }
+}
